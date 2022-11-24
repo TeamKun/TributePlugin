@@ -1,4 +1,4 @@
-package net.kunmc.lab.paperplugintemplate.util.text;
+package net.kunmc.lab.tributeplugin.util.text;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

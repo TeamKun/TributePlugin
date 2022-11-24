@@ -1,8 +1,8 @@
-package net.kunmc.lab.paperplugintemplate.util.acitonbar;
+package net.kunmc.lab.tributeplugin.util.acitonbar;
 
 import java.util.ArrayList;
 import java.util.Set;
-import net.kunmc.lab.paperplugintemplate.util.text.Text;
+import net.kunmc.lab.tributeplugin.util.text.Text;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 

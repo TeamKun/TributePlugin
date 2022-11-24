@@ -1,12 +1,12 @@
-package net.kunmc.lab.paperplugintemplate;
+package net.kunmc.lab.tributeplugin;
 
 import net.kunmc.lab.commandlib.CommandLib;
 import net.kunmc.lab.configlib.ConfigCommandBuilder;
-import net.kunmc.lab.paperplugintemplate.command.MainCommand;
-import net.kunmc.lab.paperplugintemplate.config.Config;
+import net.kunmc.lab.tributeplugin.command.MainCommand;
+import net.kunmc.lab.tributeplugin.config.Config;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class PaperPluginTemplate extends JavaPlugin {
+public final class TributePlugin extends JavaPlugin {
 
   @Override
   public void onEnable() {
@@ -14,7 +14,7 @@ public final class PaperPluginTemplate extends JavaPlugin {
     Store.plugin = this;
     Store.config = new Config(this);
     CommandLib.register(this,
-        new MainCommand("main", new ConfigCommandBuilder(Store.config).build()));
+        new MainCommand("tribute", new ConfigCommandBuilder(Store.config).build()));
   }
 
   @Override

@@ -1,7 +1,7 @@
-package net.kunmc.lab.paperplugintemplate.util.message;
+package net.kunmc.lab.tributeplugin.util.message;
 
-import net.kunmc.lab.paperplugintemplate.Store;
-import net.kunmc.lab.paperplugintemplate.util.text.Text;
+import net.kunmc.lab.tributeplugin.Store;
+import net.kunmc.lab.tributeplugin.util.text.Text;
 import org.bukkit.Bukkit;
 
 public class Logger {

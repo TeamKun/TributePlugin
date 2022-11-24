@@ -1,9 +1,9 @@
-package net.kunmc.lab.paperplugintemplate.util.acitonbar;
+package net.kunmc.lab.tributeplugin.util.acitonbar;
 
 import java.util.HashSet;
 import java.util.Set;
-import net.kunmc.lab.paperplugintemplate.Store;
-import net.kunmc.lab.paperplugintemplate.util.text.Text;
+import net.kunmc.lab.tributeplugin.Store;
+import net.kunmc.lab.tributeplugin.util.text.Text;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -1,4 +1,4 @@
-package net.kunmc.lab.paperplugintemplate.command;
+package net.kunmc.lab.tributeplugin.command;
 
 import net.kunmc.lab.commandlib.Command;
 import net.kunmc.lab.configlib.ConfigCommand;

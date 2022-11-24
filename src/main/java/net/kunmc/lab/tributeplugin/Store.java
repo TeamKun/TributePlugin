@@ -1,6 +1,6 @@
-package net.kunmc.lab.paperplugintemplate;
+package net.kunmc.lab.tributeplugin;
 
-import net.kunmc.lab.paperplugintemplate.config.Config;
+import net.kunmc.lab.tributeplugin.config.Config;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Store {
