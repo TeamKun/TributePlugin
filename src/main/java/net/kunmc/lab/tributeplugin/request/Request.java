@@ -32,7 +32,7 @@ public class Request implements Listener {
     this.timer = new Timer(timeLimit);
     this.timer.setDisplayType(DisplayType.BOSSBAR)
         .setCountDown(5)
-        .setEndProcess(new FailureEvent(this.requester))
+        .setEndProcess(new FailurePenalty(this.requester))
         .start();
     Bukkit.getPluginManager().registerEvents(this, Store.plugin);
 

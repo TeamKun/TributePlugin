@@ -26,11 +26,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
-public class FailureEvent extends EndProcess {
+public class FailurePenaltyBk extends EndProcess {
 
   private UUID requester;
 
-  public FailureEvent(UUID requester) {
+  public FailurePenaltyBk(UUID requester) {
     this.requester = requester;
   }
 
@@ -76,7 +76,7 @@ public class FailureEvent extends EndProcess {
 
       @Override
       public void run() {
-        int radius = 10;
+        int radius = Store.config.blackHaleRadius.value();
         sphereAround(center, radius).forEach(x -> {
           if (x.isEmpty()) {
             return;
