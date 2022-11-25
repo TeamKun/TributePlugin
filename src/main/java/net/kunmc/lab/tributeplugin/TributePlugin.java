@@ -4,6 +4,7 @@ import net.kunmc.lab.commandlib.CommandLib;
 import net.kunmc.lab.configlib.ConfigCommandBuilder;
 import net.kunmc.lab.tributeplugin.command.MainCommand;
 import net.kunmc.lab.tributeplugin.config.Config;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class TributePlugin extends JavaPlugin {
@@ -19,5 +20,6 @@ public final class TributePlugin extends JavaPlugin {
 
   @Override
   public void onDisable() {
+    Bukkit.getBossBars().remove();
   }
 }
