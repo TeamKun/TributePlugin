@@ -49,7 +49,7 @@ public class PinchPenalty extends RegularProcess {
                       @Override
                       public void run() {
                         spawnBlackParticle(x);
-                        if (random.nextDouble() <= 0.5 && progressRate != 0) {
+                        if (random.nextDouble() <= 0.2 && progressRate != 0) {
                           if (x.getBlock().getType() != Material.AIR) {
                             x.getBlock().setType(Material.AIR);
                           }

@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Request implements Listener {
@@ -38,12 +39,12 @@ public class Request implements Listener {
     this.requester = Store.config.requester;
     this.targetMaterial = targetMaterial;
     this.targetAmount = targetAmount;
-
+    this.actionBarKey = UUID.randomUUID().toString();
     this.timer = new Timer(timeLimit);
     this.timer.setDisplayType(DisplayType.BOSSBAR)
         .setCountDown(5, true)
         .setRegularProcess(new PinchPenalty())
-        .setEndProcess(new FailurePenalty(this.requester))
+        .setEndProcess(new FailurePenalty(this.requester, actionBarKey))
         .start();
     Bukkit.getPluginManager().registerEvents(this, Store.plugin);
 
@@ -61,7 +62,7 @@ public class Request implements Listener {
             .append(Component.text("個要求している!\n"))
             .color(TextColorPresets.YELLOW.component())
     );
-    this.actionBarKey = UUID.randomUUID().toString();
+
     ActionBarManager.create(actionBarKey, buildActionBarText());
   }
 
@@ -150,6 +151,19 @@ public class Request implements Listener {
       Component msg = finalResultMessage.get().color(TextColorPresets.GREEN.component());
       MessageUtil.broadcast(msg);
     }
+  }
+
+  @EventHandler(ignoreCancelled = true)
+  public void onPlayerDropItem(PlayerDropItemEvent event) {
+    if (!event.getPlayer().getUniqueId().equals(this.requester.value())) {
+      return;
+    }
+
+    if (event.getItemDrop().getItemStack().getType() != this.targetMaterial) {
+      return;
+    }
+
+    event.setCancelled(true);
   }
 
   private Component buildActionBarText() {

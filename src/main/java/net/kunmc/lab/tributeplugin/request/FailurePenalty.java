@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import net.kunmc.lab.configlib.value.UUIDValue;
 import net.kunmc.lab.tributeplugin.Store;
+import net.kunmc.lab.tributeplugin.util.acitonbar.ActionBarManager;
 import net.kunmc.lab.tributeplugin.util.timer.EndProcess;
 import net.kunmc.lab.tributeplugin.util.timer.TimerContext;
 import org.bukkit.Bukkit;
@@ -28,16 +29,19 @@ import org.bukkit.util.Vector;
 
 public class FailurePenalty extends EndProcess {
 
+  private final String actionBarKey;
   private UUIDValue requester;
 
-  public FailurePenalty(UUIDValue requester) {
+  public FailurePenalty(UUIDValue requester, String actionBarKey) {
     this.requester = requester;
+    this.actionBarKey = actionBarKey;
   }
 
   @Override
   public void execute(TimerContext context) {
     onExplosionPrime();
     requester.toPlayer().setGlowing(false);
+    ActionBarManager.stop(this.actionBarKey);
   }
 
   private void onExplosionPrime() {
