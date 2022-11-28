@@ -65,11 +65,11 @@ class ActionBar {
       public void run() {
         if (ActionBar.this.isBroadcast) {
           Bukkit.getOnlinePlayers().forEach(player -> {
-            player.sendActionBar(Component.text(ActionBar.this.text.toString()));
+            player.sendActionBar(ActionBar.this.text);
           });
         } else {
           ActionBar.this.targets.forEach(player -> {
-            player.sendActionBar(Component.text(ActionBar.this.text.toString()));
+            player.sendActionBar(ActionBar.this.text);
           });
         }
       }

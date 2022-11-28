@@ -1,12 +1,12 @@
 package net.kunmc.lab.tributeplugin.request;
 
-import static net.kunmc.lab.tributeplugin.util.calculation.ShapeUtils.sphereAround;
+import static net.kunmc.lab.tributeplugin.util.calculation.ShapeUtils.getBlockSphereAround;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import net.kunmc.lab.configlib.value.UUIDValue;
 import net.kunmc.lab.tributeplugin.Store;
 import net.kunmc.lab.tributeplugin.util.timer.EndProcess;
 import net.kunmc.lab.tributeplugin.util.timer.TimerContext;
@@ -16,6 +16,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -27,22 +28,20 @@ import org.bukkit.util.Vector;
 
 public class FailurePenalty extends EndProcess {
 
-  private UUID requester;
+  private UUIDValue requester;
 
-  public FailurePenalty(UUID requester) {
+  public FailurePenalty(UUIDValue requester) {
     this.requester = requester;
   }
 
   @Override
   public void execute(TimerContext context) {
-    Player player = Bukkit.getPlayer(requester);
     onExplosionPrime();
-    player.setGlowing(false);
+    requester.toPlayer().setGlowing(false);
   }
 
   private void onExplosionPrime() {
-    Player player = Bukkit.getPlayer(requester);
-    Location center = player.getLocation();
+    Location center = this.requester.toPlayer().getLocation();
     World world = center.getWorld();
     int totalTick = 60;
     ThreadLocalRandom random = ThreadLocalRandom.current();
@@ -54,7 +53,7 @@ public class FailurePenalty extends EndProcess {
         Set<Block> blockSet = new HashSet<>();
 
         for (int i = 0; i < radius; i++) {
-          sphereAround(center, i).forEach(block -> {
+          getBlockSphereAround(center, i).forEach(block -> {
             blockSet.add(block);
           });
         }
@@ -67,6 +66,7 @@ public class FailurePenalty extends EndProcess {
                   if (x.isEmpty()) {
                     return;
                   }
+
                   if (random.nextDouble() <= 0.05) {
                     FallingBlock fallingBlock = world.spawnFallingBlock(x.getLocation(),
                         x.getBlockData());
@@ -99,6 +99,7 @@ public class FailurePenalty extends EndProcess {
 
       @Override
       public void run() {
+        world.playSound(center, Sound.ENTITY_WITHER_SPAWN, 1, 1);
         involvedEntities.forEach(x -> {
           Vector sub = center.toVector().subtract(x.getLocation().toVector());
           sub.multiply(0.35 / sub.length());
@@ -132,6 +133,4 @@ public class FailurePenalty extends EndProcess {
       }
     }.runTaskTimerAsynchronously(Store.plugin, 0, 1);
   }
-
-
 }

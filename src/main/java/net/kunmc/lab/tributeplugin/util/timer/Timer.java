@@ -6,8 +6,10 @@ import net.kunmc.lab.tributeplugin.Store;
 import net.kunmc.lab.tributeplugin.util.acitonbar.ActionBarManager;
 import net.kunmc.lab.tributeplugin.util.bossbar.BroadcastBossBar;
 import net.kunmc.lab.tributeplugin.util.message.MessageUtil;
+import net.kunmc.lab.tributeplugin.util.sound.SoundUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,9 +23,11 @@ public class Timer {
   private int countDown = -1;
   private double currentTime;
   private Task task;
+  private TimerStatus status = TimerStatus.Waiting;
 
   private RegularProcess regularProcess;
   private EndProcess endProcess;
+  private boolean shouldPlayCountDownSound;
 
   public Timer(int limit) {
     this.limit = limit;
@@ -51,8 +55,9 @@ public class Timer {
     return this;
   }
 
-  public Timer setCountDown(int startValue) {
+  public Timer setCountDown(int startValue, boolean shouldPlaySound) {
     this.countDown = startValue;
+    this.shouldPlayCountDownSound = shouldPlaySound;
     return this;
   }
 
@@ -67,19 +72,24 @@ public class Timer {
   }
 
   public void start() {
+    this.status = TimerStatus.Running;
     this.task = new Task();
   }
 
   public void pause() {
     if (Objects.nonNull(this.task)) {
-      this.task.pause();
+      this.status = TimerStatus.Paused;
     }
   }
 
   public void resume() {
     if (Objects.nonNull(this.task)) {
-      this.task.resume();
+      this.status = TimerStatus.Running;
     }
+  }
+
+  public TimerStatus status() {
+    return this.status;
   }
 
   public void stop(boolean shouldExecuteEndProcess) {
@@ -88,7 +98,6 @@ public class Timer {
 
   class Task extends BukkitRunnable {
 
-    private boolean isRunning = true;
     private String actionBarName;
     private BroadcastBossBar broadcastBossBar;
     private NamespacedKey bossBarKey;
@@ -100,8 +109,7 @@ public class Timer {
       }
 
       if (Timer.this.displayType == DisplayType.BOSSBAR) {
-        this.bossBarKey = Objects.requireNonNull(
-            NamespacedKey.fromString(UUID.randomUUID().toString()));
+        this.bossBarKey = new NamespacedKey(Store.plugin, UUID.randomUUID().toString());
         this.broadcastBossBar = new BroadcastBossBar(
             Bukkit.createBossBar(bossBarKey,
                 TimerUtil.limitText(Timer.this.displayName, Timer.this.currentTime), BarColor.GREEN,
@@ -111,14 +119,6 @@ public class Timer {
       }
 
       this.runTaskTimerAsynchronously(Store.plugin, 0, 20);
-    }
-
-    void pause() {
-      this.isRunning = false;
-    }
-
-    void resume() {
-      this.isRunning = true;
     }
 
     void stop(boolean shouldExecuteEndProcess) {
@@ -139,7 +139,7 @@ public class Timer {
 
     @Override
     public void run() {
-      if (!this.isRunning) {
+      if (Timer.this.status != TimerStatus.Running) {
         return;
       }
       showLimit();
@@ -150,6 +150,10 @@ public class Timer {
       }
 
       if (Timer.this.countDown >= Timer.this.currentTime) {
+        if (shouldPlayCountDownSound) {
+          SoundUtils.broadcastSound(Sound.BLOCK_STONE_BUTTON_CLICK_OFF, 1, 1);
+        }
+
         MessageUtil.broadcastTitle(
             String.valueOf((int) Math.floor(Timer.this.currentTime)),
             "",
@@ -167,6 +171,7 @@ public class Timer {
       // 終了時
       showLimit();
       this.stop(true);
+      Timer.this.status = TimerStatus.Finished;
     }
 
 
