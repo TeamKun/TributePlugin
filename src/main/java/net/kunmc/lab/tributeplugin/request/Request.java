@@ -31,7 +31,7 @@ public class Request implements Listener {
   private final Timer timer;
   private final Material targetMaterial;
   private int targetAmount;
-  private Map<String, Integer> presentationCount = new HashMap<>();
+  private final Map<String, Integer> presentationCount = new HashMap<>();
   private String actionBarKey;
 
   public Request(Material targetMaterial, int targetAmount, int timeLimit) {
