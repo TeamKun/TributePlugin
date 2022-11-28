@@ -52,13 +52,13 @@ public class Request implements Listener {
     player.setInvulnerable(true);
 
     MessageUtil.broadcast(
-        Component.text("!!!緊急クエスト!!!\n")
+        Component.text("\n!!!緊急クエスト!!!\n")
             .append(Component.text(this.requester.playerName()))
             .append(Component.text("は"))
             .append(Component.translatable(this.targetMaterial.getTranslationKey()))
             .append(Component.text("を"))
             .append(Component.text(this.targetAmount))
-            .append(Component.text("個要求している!"))
+            .append(Component.text("個要求している!\n"))
             .color(TextColorPresets.YELLOW.component())
     );
     this.actionBarKey = UUID.randomUUID().toString();
