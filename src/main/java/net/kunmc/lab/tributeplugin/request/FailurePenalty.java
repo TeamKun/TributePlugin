@@ -103,8 +103,14 @@ public class FailurePenalty extends EndProcess {
       public void run() {
         world.playSound(center, Sound.ENTITY_WITHER_SPAWN, 1, 1);
         involvedEntities.forEach(x -> {
-          Vector sub = center.toVector().subtract(x.getLocation().toVector());
-          sub.multiply(0.35 / sub.length());
+          Vector sub;
+          try {
+            sub = center.toVector().subtract(x.getLocation().toVector());
+            sub.multiply(0.35 / sub.length());
+          } catch (IllegalArgumentException e) {
+            return;
+          }
+
           x.setVelocity(sub);
           Store.queuedExecutor.offer(
               new BukkitRunnable() {
