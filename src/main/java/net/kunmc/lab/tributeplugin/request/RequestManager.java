@@ -3,8 +3,6 @@ package net.kunmc.lab.tributeplugin.request;
 import java.util.Objects;
 import net.kunmc.lab.tributeplugin.util.timer.TimerStatus;
 import org.bukkit.Material;
-import org.bukkit.event.entity.EntityPickupItemEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
 
 public class RequestManager {
 
@@ -13,8 +11,6 @@ public class RequestManager {
   public static void start(Material item, int amount, int timeLimit) {
     if (Objects.nonNull(request)) {
       request.cancel();
-      EntityPickupItemEvent.getHandlerList().unregister(request);
-      PlayerDropItemEvent.getHandlerList().unregister(request);
     }
 
     request = new Request(item, amount, timeLimit);

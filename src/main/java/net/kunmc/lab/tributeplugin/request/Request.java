@@ -67,7 +67,10 @@ public class Request implements Listener {
   }
 
   void cancel() {
+    EntityPickupItemEvent.getHandlerList().unregister(this);
+    PlayerDropItemEvent.getHandlerList().unregister(this);
     this.timer.stop(false);
+    ActionBarManager.stop(this.actionBarKey);
     this.requester.toPlayer().setGlowing(false);
   }
 
@@ -134,9 +137,8 @@ public class Request implements Listener {
     // 成功
     if (this.targetAmount <= 0) {
       MessageUtil.broadcastTitle(TextColorPresets.GREEN.Prepend("成功!"), "", 20, 60, 20);
-      this.timer.stop(false);
       this.requester.toPlayer().setGlowing(false);
-      ActionBarManager.stop(this.actionBarKey);
+      cancel();
       MessageUtil.broadcastTitle("成功!", "", 20, 60, 20);
       SoundUtils.broadcastSound(Sound.UI_TOAST_CHALLENGE_COMPLETE, 1, 1);
       Component resultMessage = Component.text("\nクエスト成功!\n")

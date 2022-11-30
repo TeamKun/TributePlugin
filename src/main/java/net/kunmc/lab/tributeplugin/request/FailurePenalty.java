@@ -8,7 +8,6 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import net.kunmc.lab.configlib.value.UUIDValue;
 import net.kunmc.lab.tributeplugin.Store;
-import net.kunmc.lab.tributeplugin.util.acitonbar.ActionBarManager;
 import net.kunmc.lab.tributeplugin.util.timer.EndProcess;
 import net.kunmc.lab.tributeplugin.util.timer.TimerContext;
 import org.bukkit.Bukkit;
@@ -39,9 +38,8 @@ public class FailurePenalty extends EndProcess {
 
   @Override
   public void execute(TimerContext context) {
+    RequestManager.cancel();
     onExplosionPrime();
-    requester.toPlayer().setGlowing(false);
-    ActionBarManager.stop(this.actionBarKey);
   }
 
   private void onExplosionPrime() {

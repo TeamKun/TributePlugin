@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Config extends BaseConfig {
 
-  public final BooleanValue devMode = new BooleanValue(false);
+  public final BooleanValue devMode = new BooleanValue(false).writableByCommand(false);
   public final UUIDValue requester = new UUIDValue();
   public final IntegerValue blackHaleRadius = new IntegerValue(7);
 
